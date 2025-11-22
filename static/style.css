@@ -1,0 +1,685 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #003f5c;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    animation: fadeInBody 1.5s ease-in-out;
+    background: linear-gradient(135deg, #f0f4f8, #d0f0fd);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+@keyframes fadeInBody {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 🏷️ العناوين */
+h1 {
+    color: #247ba0;
+    margin-top: 40px;
+    text-shadow: 1px 1px 3px #aaa;
+    animation: slideDown 1s ease-out;
+}
+h2 {
+    color: #005f73;
+    margin-top: 20px;
+}
+@keyframes slideDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 📤 فورم رفع الصور */
+form {
+    background-color: #ffffffcc;
+    padding: 30px;
+    border-radius: 15px;
+    width: 50%;
+    margin: 30px auto;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    animation: fadeInUp 1.3s ease-in-out;
+}
+@keyframes fadeInUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+input[type="file"] {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+input[type="submit"] {
+    background-color: #00a8e8;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+input[type="submit"]:hover {
+    background-color: #007ea7;
+    transform: scale(1.05);
+}
+
+/* 🖼️ الصور */
+img {
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    animation: fadeInImage 1.2s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+}
+img:hover {
+    transform: scale(1.05);
+}
+@keyframes fadeInImage {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* 📦 Sections */
+.container-box {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    background-color: #caf0f8;
+    animation: fadeInUp 1.5s ease-in-out;
+}
+.container-box h2 {
+    color: #03045e;
+    margin-bottom: 20px;
+}
+.container-box p, .container-box ul {
+    color: #023e8a;
+    font-size: 18px;
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.container-box ul { list-style: none; padding: 0; }
+.container-box li {
+    background-color: #ffffffcc;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+}
+
+/* 🔼 زر العودة للأعلى */
+a.btn-info {
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+a.btn-info:hover {
+    background-color: #005f73;
+    transform: scale(1.1);
+}
+.fa-arrow-up:hover {
+    transform: rotate(360deg);
+    transition: 0.6s ease;
+}
+
+/* 📑 References */
+.references {
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffffcc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.references h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2C3E50;
+}
+.references a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+.references a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* 🌟 Hero Section */
+.hero {
+    min-height: 80vh;
+    background: linear-gradient(135deg, #caf0f8, #90e0ef);
+    color: #023e8a;
+    padding: 50px 20px;
+    border-radius: 0 0 50px 50px;
+    animation: fadeInUp 1.5s ease-in-out;
+}
+.hero h1 {
+    font-size: 3rem;
+    color: #03045e;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+.hero p {
+    max-width: 700px;
+    margin: 0 auto 20px;
+    font-size: 1.2rem;
+    color: #0077b6;
+}
+.hero .btn-modern {
+    background: linear-gradient(45deg, #00a8e8, #007ea7);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+.hero .btn-modern:hover {
+    background: linear-gradient(45deg, #007ea7, #00a8e8);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* 🎭 Reveal Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 📊 Result Box */
+.result-box {
+    background-color: #e0f7fa;
+    color: #006064;
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 30px auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    animation: fadeInUp 1.2s ease-in-out;
+}
+.result-box h2 {
+    color: #00796b;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 🔄 Preloader */
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#preloader .loader-logo {
+  text-align: center;
+  color: white;
+  animation: fadeIn 1.5s ease-in-out infinite alternate;
+}
+#preloader img {
+  width: 100px;
+  margin-bottom: 15px;
+}
+@keyframes fadeIn {
+  from { opacity: 0.5; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.05); }
+}
+#preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* 📌 Footer */
+footer {
+    background-color: #007ea7;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 16px;
+    margin-top: 40px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+}
+/* 🌙 الوضع الليلي */
+body.dark-mode {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .navbar {
+  background-color: #1f1f1f !important;
+}
+
+body.dark-mode .hero {
+  background: linear-gradient(135deg, #1e1e1e, #2b2b2b);
+  color: #e0e0e0;
+}
+
+body.dark-mode .hero h1 {
+  color: #90caf9;
+}
+
+body.dark-mode .hero p {
+  color: #b0bec5;
+}
+
+body.dark-mode form {
+  background-color: #1f1f1fdd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+body.dark-mode input[type="submit"] {
+  background: linear-gradient(45deg, #2196f3, #1976d2);
+}
+
+body.dark-mode input[type="submit"]:hover {
+  background: linear-gradient(45deg, #1976d2, #1565c0);
+}
+
+body.dark-mode .container-box {
+  background-color: #1e1e1e;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .container-box h2 {
+  color: #bbdefb;
+}
+
+body.dark-mode .container-box p,
+body.dark-mode .container-box ul {
+  color: #e0e0e0;
+}
+
+body.dark-mode .container-box li {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.dark-mode footer {
+  background-color: #1f1f1f;
+  color: #90caf9;
+}
+
+body.dark-mode .result-box {
+  background-color: #263238;
+  color: #ffffff;
+}
+
+body.dark-mode a.btn-info {
+  background-color: #2196f3;
+  color: #fff;
+}
+body.dark-mode a.btn-info:hover {
+  background-color: #1976d2;
+}
+/* 👥 Team Section */
+.team-info {
+  text-align: center;
+}
+
+.team-info h2 {
+  font-size: 2rem;
+  color: #03045e;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.team-card {
+  background: #ffffffdd;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: all 0.4s ease;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.team-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.team-card h5 {
+  font-size: 1.1rem;
+  color: #0077b6;
+  font-weight: bold;
+  margin: 10px 0 5px;
+}
+
+.team-card .role {
+  color: #0096c7;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.team-card .desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+/* ✨ Hover Effects */
+.team-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.team-card:hover img {
+  transform: scale(1.1);
+}
+
+/* 🌙 Dark Mode */
+body.dark-mode .team-card {
+  background: #1e1e1e;
+  color: #e0e0e0;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+}
+
+body.dark-mode .team-card h5 {
+  color: #90caf9;
+}
+
+body.dark-mode .team-card .role {
+  color: #64b5f6;
+}
+
+body.dark-mode .team-card .desc {
+  color: #cfd8dc;
+}
+/* 🩺 About Section */
+.about-section {
+  background: #ffffffdd;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 50px auto;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.about-section h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #03045e;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.about-section h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(45deg, #00a8e8, #0077b6);
+  margin-top: 8px;
+  border-radius: 2px;
+}
+
+.about-section p {
+  font-size: 1.1rem;
+  color: #023e8a;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.about-section .about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-section .about-list li {
+  font-size: 1rem;
+  background: #f0f8ffcc;
+  margin-bottom: 12px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: #023e8a;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-section .about-list li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.about-section .about-icon {
+  width: 120px;
+  transition: transform 0.4s ease;
+}
+
+.about-section .about-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* 🌙 Dark Mode */
+body.dark-mode .about-section {
+  background: #1f1f1fdd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .about-section h2 {
+  color: #bbdefb;
+}
+
+body.dark-mode .about-section p,
+body.dark-mode .about-section .about-list li {
+  color: #e0e0e0;
+  background: #2a2a2a;
+}
+/* ✨ Animation for About Icon */
+@keyframes fadeInIcon {
+  from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.about-section .about-icon {
+  width: 120px;
+  animation: fadeInIcon 1.2s ease-in-out;
+  transition: transform 0.4s ease;
+}
+
+.about-section .about-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+/* How It Works Section */
+.how-it-works {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.how-it-works h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+}
+
+.how-it-works h2::after {
+  content: "";
+  width: 60%;
+  height: 3px;
+  background: #007bff;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+.step-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.step-card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.step-card h5 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.step-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+/* Dark Mode Fix for How It Works Cards */
+body.dark-mode .how-it-works {
+  background: #121212; /* خلفية داكنة */
+}
+
+body.dark-mode .step-card {
+  background: #1e1e1e;  /* كرت داكن */
+  color: #f0f0f0;       /* نص فاتح */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-mode .step-card h5 {
+  color: #ffffff;
+}
+
+body.dark-mode .step-card p {
+  color: #cccccc;
+}
+body.dark-mode .step-card .icon {
+  color: #4da3ff; /* لون أيقونات أزرق فاتح يبان في الداكن */
+}
+/* Progress Bar */
+.progress {
+  height: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #e9ecef; /* خلفية الشريط */
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #4caf50, #81c784); /* لون الشريط (اخضر متدرج) */
+  transition: width 0.6s ease;
+}
+/* صورة X-ray داخل نتيجة التشخيص */
+.result-thumb {
+  max-width: 220px;      /* أقصى عرض */
+  max-height: 220px;     /* أقصى ارتفاع */
+  border-radius: 12px;   /* زوايا ناعمة */
+  object-fit: cover;     /* يملأ الإطار بدون تشويه */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* ظل خفيف */
+}
+/* صورة X-ray داخل النتيجة */
+.result-thumb {
+  max-width: 240px;            /* حجم متناسق */
+  max-height: 240px;
+  border-radius: 16px;         /* زوايا ناعمة أكثر */
+  object-fit: cover;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2); /* ظل عميق */
+  border: 3px solid #fff;      /* إطار أبيض بسيط */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* تأثير عند المرور بالماوس */
+.result-thumb:hover {
+  transform: scale(1.05);      /* تكبير بسيط */
+  box-shadow: 0 10px 22px rgba(0,0,0,0.3); /* ظل أعمق */
+}
+
+/* خلفية حاوية الصورة */
+.result-thumb-container {
+  background: linear-gradient(135deg, #f0f4f8, #dfe9f3);
+  padding: 10px;
+  border-radius: 20px;
+  display: inline-block;
+}
+/* شكل عام لبطاقة النتيجة */
+.result-card {
+  border-radius: 18px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.6s ease;
+}
+
+/* لمسة حركة عند المرور */
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* لون مخصص حسب الحالة */
+.result-card.positive {
+  border-left: 8px solid #e53935;
+  background: linear-gradient(135deg, #fdecea, #fff);
+}
+
+.result-card.negative {
+  border-left: 8px solid #43a047;
+  background: linear-gradient(135deg, #e8f5e9, #fff);
+}
+
+/* البادج */
+.result-badge {
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.result-badge.positive {
+  background: #e53935;
+}
+
+.result-badge.negative {
+  background: #43a047;
+}
+
+/* حركة دخول ناعمة */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

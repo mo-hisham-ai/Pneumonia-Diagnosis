@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pneumonia Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* 🌙 الوضع الليلي */
+        body.dark-mode {
+            background: #121212 !important;
+            color: #e0e0e0 !important;
+        }
+        body.dark-mode footer {
+            background: #1e1e1e;
+        }
+
+        /* 🔄 Preloader (معدل) */
+        #preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #4e54c8, #8f94fb);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #preloader .loader-logo {
+          text-align: center;
+          color: white;
+          animation: fadeIn 1.5s ease-in-out infinite alternate;
+        }
+        #preloader i {
+          font-size: 60px;
+          margin-bottom: 15px;
+          color: #00e0ff;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0.5; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1.05); }
+        }
+        #preloader.hide {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* 👤 تصميم بطاقة الفريق */
+        .team-member {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .member-card {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: 0;
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 220px;
+            z-index: 100;
+        }
+        .team-member:hover .member-card {
+            display: block;
+        }
+        .member-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+    </style>
+</head>
+<body style="background: linear-gradient(135deg, #f0f4f8, #d0f0fd); background-repeat: no-repeat; background-size: cover; background-attachment: fixed;">
+
+    <!-- 🔄 Preloader -->
+    <div id="preloader">
+      <div class="loader-logo">
+        <i class="fas fa-x-ray"></i>
+        <p>Loading...</p>
+        <button id="darkToggle" class="btn-modern">🌙 Dark Mode</button>
+      </div>
+    </div>
+
+    <!-- شريط التنقل -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="{{ url_for('static', filename='university-logo.png') }}" alt="University Logo" width="40" height="40" class="me-2">
+            Pneumonia AI
+        </a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+            <li class="nav-item">
+              <button id="modeToggle" class="btn btn-sm btn-outline-light ms-3">🌙</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- قسم الـ Hero -->
+    <section class="hero d-flex flex-column align-items-center justify-content-center text-center reveal">
+        <img src="{{ url_for('static', filename='xray-blue-icon.png') }}" 
+             alt="X-Ray Icon" width="90" class="mb-3">
+        <h1 class="fw-bold">Smart Pneumonia Diagnosis</h1>
+        <p class="lead mb-4">Deep Learning Approach to Pneumonia Detection and Classification from Chest X-Ray</p>
+        <a href="#upload-form" class="btn btn-lg btn-modern">🚀 Start Diagnosis</a>
+    </section>
+    
+
+    <!-- نموذج رفع الصورة -->
+    <form id="upload-form" class="p-3 text-center reveal" action='\' method="post" enctype="multipart/form-data">
+        <h2>Please Upload an X-ray Image</h2>
+        <input class="form-control border border-dark" type="file" name="imagefile" id="imagefile" required autofocus>
+        <p id="filename" style="margin-top:10px;"></p>
+        <input class="btn btn-primary mt-3" type="submit" value="Predict">
+    
+    </form>
+
+    {# --------- RESULT / IMAGE (استبدِل الكتل القديمة بها) --------- #}
+{% if prediction_label is defined or prediction is defined %}
+<section class="container-box reveal">
+  <div class="result-card p-3">
+    {# تجهيز المتغيرات للاستخدام داخل القالب #}
+    {% if prediction_label is defined %}
+      {% set label = prediction_label %}
+      {% set conf = prediction_confidence %}
+      {% set posp = pos_prob if pos_prob is defined else None %}
+    {% else %}
+      {# نستخدم النص الكامل prediction: "Label (xx.xx%)" ونحاول استخراج الثقة #}
+      {% set label = prediction.split('(')[0].strip() %}
+      {% set conf = 0 %}
+      {% if '(' in prediction and '%' in prediction %}
+        {% set conf = prediction.split('(')[1].split('%')[0] %}
+      {% endif %}
+      {% set posp = None %}
+    {% endif %}
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="m-0">Diagnosis Result</h3>
+      <span class="result-badge {{ 'positive' if label == 'Positive' else 'negative' }}">
+        {{ label }}
+      </span>
+    </div>
+
+    <div class="d-flex align-items-center gap-4 flex-wrap">
+      <!-- صورة الإكسراي -->
+      {% if imagePath is defined %}
+      <div>
+        <img src="{{ imagePath }}" alt="X-ray" class="result-thumb">
+      </div>
+      {% endif %}
+
+      <!-- معلومات النتيجة -->
+      <div style="flex:1; min-width:260px;">
+        <div class="mb-2">
+          <div class="small">Infection Rate:</div>
+          <h4 class="mb-1">{{ conf }}%</h4>
+        </div>
+        
+
+        <!-- شريط التقدم -->
+        <div class="progress" style="height: 14px; border-radius:10px;">
+          <div class="progress-bar"
+               role="progressbar"
+               aria-valuenow="{{ conf }}"
+               aria-valuemin="0"
+               aria-valuemax="100"
+               ></div>
+          </div>
+        </div>
+
+        <!-- أزرار -->
+      <div class="mt-3 d-flex gap-2 flex-wrap">
+  <a href="{{ url_for('download_report') }}" 
+     class="btn btn-outline-primary btn-sm" 
+     target="_blank">📄 Download Report (PDF)</a>
+  <a href="/" class="btn btn-secondary btn-sm">🔁 Analyze another</a>
+  <button class="btn btn-light btn-sm" data-bs-toggle="collapse" data-bs-target="#detailsSection">
+</div>
+
+
+    <!-- تفاصيل قابلة للطي -->
+    <div id="detailsSection" class="collapse mt-3">
+      <ul class="list-unstyled small mb-0">
+        <li><strong>Label:</strong> {{ label }}</li>
+
+        {% if posp is not none %}
+          <li><strong>Positive probability:</strong> {{ (posp * 100) | round(2) }}%</li>
+          <li><strong>Negative probability:</strong> {{ ((1 - posp) * 100) | round(2) }}%</li>
+        {% elif prediction is defined and '{}' in prediction and '%' in prediction %}
+          <li><strong>Confidence (extracted):</strong> {{ conf }}%</li>
+        {% endif %}
+
+        <li><strong>Threshold used:</strong> 50%</li>
+        <li><strong>Exam date:</strong> {{ timestamp if timestamp is defined else "—" }}</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endif %}
+{# -------------------------------------------------------------- #}
+
+
+    <!-- معلومات عن المشروع -->
+<section class="about-section container-box reveal" id="about">
+  <div class="row align-items-center">
+    <!-- أيقونة/صورة -->
+    <div class="col-md-4 text-center mb-4 mb-md-0">
+      <img src="{{ url_for('static', filename='xray-blue-icon.png') }}" 
+           alt="About Project" class="about-icon">
+    </div>
+    <!-- النصوص -->
+    <div class="col-md-8 text-start">
+      <h2>About the Project</h2>
+      <p>
+        Our AI-powered system is designed to assist in the early detection of pneumonia
+        from chest X-rays using deep learning algorithms. 
+        It provides fast, reliable, and accurate diagnosis, 
+        helping doctors save time and improve patient outcomes.
+      </p>
+      <ul class="about-list">
+        <li>⚡ Faster and more accurate diagnosis</li>
+        <li>🧠 Powered by deep learning algorithms</li>
+        <li>🩺 Supports doctors in clinical decision making</li>
+        <li>🌍 Aims to reduce global pneumonia impact</li>
+      </ul>
+    </div>
+  </div>
+  
+</section>
+
+
+    <!-- قسم المراجع -->
+    <section class="references container-box reveal" id="references">
+        <h2>References</h2>
+        <ul>
+            <li><a href="https://www.who.int/news-room/fact-sheets/detail/pneumonia" target="_blank">🌍 WHO - Pneumonia Fact Sheet</a></li>
+            <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4256233/" target="_blank">📚 Chest X-ray Analysis using Deep Learning</a></li>
+            <li><a href="https://arxiv.org/abs/1711.05225" target="_blank">🧠 CheXNet: Radiologist-Level Pneumonia Detection</a></li>
+            <li><a href="https://pubmed.ncbi.nlm.nih.gov/32632412/" target="_blank">🩺 AI-Assisted Diagnosis of Pneumonia</a></li>
+        </ul>
+    </section>
+<section class="how-it-works container-box reveal" id="how">
+  <h2>How It Works</h2>
+  <div class="steps row text-center justify-content-center">
+    <!-- Step 1 -->
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="step-card">
+        <div class="icon">📤</div>
+        <h5>Upload</h5>
+        <p>Upload a chest X-ray image through the system.</p>
+      </div>
+    </div>
+    <!-- Step 2 -->
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="step-card">
+        <div class="icon">🧠</div>
+        <h5>AI Analysis</h5>
+        <p>The deep learning model analyzes the image.</p>
+      </div>
+    </div>
+    <!-- Step 3 -->
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="step-card">
+        <div class="icon">📊</div>
+        <h5>Prediction</h5>
+        <p>The system predicts whether pneumonia is detected.</p>
+      </div>
+    </div>
+    <!-- Step 4 -->
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="step-card">
+        <div class="icon">✅</div>
+        <h5>Result</h5>
+        <p>Results are displayed clearly for doctors to review.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- قسم الفريق -->
+<section class="team-info container-box reveal" id="team">
+  <h2>Meet the Team</h2>
+  <div class="row justify-content-center">
+    <!-- عضو الفريق -->
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+        <h5 class="mt-3">MOHAMED HISHAM AL TAYEB HARWON</h5>
+        <p class="role">UI/UX & Model Integration</p>
+        <p class="desc">Responsible for designing the user interface and connecting it with the model.</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+        <h5 class="mt-3">AHMED OSAMA ABDALLA ALI</h5>
+        <p class="role">Team Leader</p>
+        <p class="desc">Leads the project, manages tasks, and ensures quality delivery.</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+        <h5 class="mt-3">AHMED ABDALRHMAN ELSIR AKASHA</h5>
+        <p class="role">Data Engineer</p>
+        <p class="desc">Prepares datasets, handles preprocessing, and ensures data quality.</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+      <div class="team-card">
+        <img src="{{ url_for('static', filename='profile.png') }}" alt="Profile">
+        <h5 class="mt-3">ORWA NOUR ALDEEN HUSSEIN AHMED</h5>
+        <p class="role">Backend Developer</p>
+        <p class="desc">Training and testing the model, managing backend operations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- زر العودة للأعلى -->
+    <a href="#top" class="btn btn-info" style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- الفوتر -->
+    <footer class="text-center p-3 mt-5">
+        <img src="{{ url_for('static', filename='university-logo.png') }}" alt="University Logo" width="60" style="margin-bottom: 10px;">
+        <br>
+        &copy; 2025 Smart Pneumonia Diagnosis. All rights reserved.
+    </footer>
+    <script>
+  window.onload = function() {
+    const section = document.getElementById("upload");
+    if (section) {
+      section.scrollIntoView({ behavior: "auto", block: "start" });
+    }
+  };
+</script>
+
+    <script>
+        // اختيار ملف
+        document.getElementById('imagefile').addEventListener('change', function () {
+            document.getElementById('filename').innerText = "Selected File: " + this.files[0].name;
+        });
+
+        // حركة Scroll Reveal
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.reveal');
+            elements.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // الوضع الليلي
+        const modeToggle = document.getElementById('modeToggle');
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            modeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌙";
+        });
+
+        // 🔄 إخفاء الـ Preloader عند تحميل الصفحة
+        window.addEventListener("load", function () {
+          const preloader = document.getElementById("preloader");
+          preloader.classList.add("hide");
+        });
+    </script>
+    <script>
+  const toggleBtn = document.getElementById("darkToggle");
+  toggleBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    toggleBtn.textContent = 
+      document.body.classList.contains("dark-mode") ? "☀️ Light Mode" : "🌙 Dark Mode";
+  });
+</script>
+</body>
+</html>
+
